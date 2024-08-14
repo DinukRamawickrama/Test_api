@@ -1,6 +1,6 @@
 # Stage 1: Build the application
-FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
-WORKDIR ./
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+WORKDIR /app
 
 # Copy the project file and restore dependencies
 COPY ["WebAPP.csproj", "./"]
@@ -16,7 +16,7 @@ RUN dotnet build "WebAPP.csproj" -c Release -o /app/build
 RUN dotnet publish "WebAPP.csproj" -c Release -o /app/publish
 
 # Stage 2: Create the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
 
 # Copy the published application from the build stage
