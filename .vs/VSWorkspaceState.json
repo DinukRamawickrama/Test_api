@@ -1,6 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\.github",
+    "\\.github\\workflows",
+    "\\bin",
+    "\\bin\\Debug",
+    "\\Controllers",
+    "\\Model",
+    "\\Properties"
   ],
+  "SelectedNode": "\\Controllers",
   "PreviewInSolutionExplorer": false
 }

@@ -6,11 +6,13 @@ E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\WebAPP.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\WebAPP.pdb
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\EntityFramework.SqlServer.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\EntityFramework.dll
+E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Humanizer.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.Design.dll
 E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
@@ -66,5 +68,3 @@ E:\DevOps\C#\WebAPP\WebAPP\obj\Debug\net6.0\refint\WebAPP.dll
 E:\DevOps\C#\WebAPP\WebAPP\obj\Debug\net6.0\WebAPP.pdb
 E:\DevOps\C#\WebAPP\WebAPP\obj\Debug\net6.0\WebAPP.genruntimeconfig.cache
 E:\DevOps\C#\WebAPP\WebAPP\obj\Debug\net6.0\ref\WebAPP.dll
-E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Humanizer.dll
-E:\DevOps\C#\WebAPP\WebAPP\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll

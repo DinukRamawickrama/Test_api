@@ -25,88 +25,122 @@ namespace WebAPP.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTask(Model.Task task)
         {
-            task.CreatedOn = DateTime.UtcNow;
-            _context.Tasks.Add(task);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetTaskById), new { id = task.ID }, task);
+            try
+            {
+                task.CreatedOn = DateTime.UtcNow;
+                _context.Tasks.Add(task);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetTaskById), new { id = task.ID }, task);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // Update Task
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int id, Model.Task task)
         {
-            if (id != task.ID)
+            try
             {
-                return BadRequest();
-            }
+                if (id != task.ID)
+                {
+                    return BadRequest();
+                }
 
-            var existingTask = await _context.Tasks.FindAsync(id);
-            if (existingTask == null)
+                var existingTask = await _context.Tasks.FindAsync(id);
+                if (existingTask == null)
+                {
+                    return NotFound();
+                }
+
+                existingTask.Name = task.Name;
+                existingTask.Description = task.Description;
+                existingTask.EstimatedDurationInHours = task.EstimatedDurationInHours;
+                existingTask.StatusId = task.StatusId;
+                existingTask.UpdatedOn = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            } catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
+
             }
-
-            existingTask.Name = task.Name;
-            existingTask.Description = task.Description;
-            existingTask.EstimatedDurationInHours = task.EstimatedDurationInHours;
-            existingTask.StatusId = task.StatusId;
-            existingTask.UpdatedOn = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         // Complete Task
         [HttpPut("{id}/complete")]
         public async Task<IActionResult> CompleteTask(int id)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            if (task == null)
+            try
             {
-                return NotFound();
+                var task = await _context.Tasks.FindAsync(id);
+                if (task == null)
+                {
+                    return NotFound();
+                }
+
+                task.StatusId = 2; // Assuming 2 represents 'Completed'
+                task.UpdatedOn = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
             }
-
-            task.StatusId = 2; // Assuming 2 represents 'Completed'
-            task.UpdatedOn = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         // Delete Task
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            if (task == null)
+            try
             {
-                return NotFound();
+
+
+                var task = await _context.Tasks.FindAsync(id);
+                if (task == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Tasks.Remove(task);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
-
-            _context.Tasks.Remove(task);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpGet("authenticate")]
         public IActionResult Authitcate() 
             {
-            var Claims = new[]
+            try
             {
-                new Claim("FullName","Figri Ismail"),
+                var Claims = new[]
+                {
+                new Claim("FullName","Dinuk Ramawickrama"),
                 new Claim(JwtRegisteredClaimNames.Sub, "task.id")
 
             };
-            var keyBytes = Encoding.UTF8.GetBytes(Constants.Secret);
-            var key = new SymmetricSecurityKey(keyBytes);
-            var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256 );
+                var keyBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+                var key = new SymmetricSecurityKey(keyBytes);
+                var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256);
 
-            var tokenString = new JwtSecurityToken(Constants.Issuer, Constants.Audience,Claims,notBefore: DateTime.Now,expires: DateTime.Now.AddHours(1),signingCredentials);
+                var tokenString = new JwtSecurityToken(Constants.Issuer, Constants.Audience, Claims, notBefore: DateTime.Now, expires: DateTime.Now.AddHours(1), signingCredentials);
 
-            return Ok(new { accessToken = tokenString });
+                return Ok(new { accessToken = tokenString });
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -116,13 +150,19 @@ namespace WebAPP.Controllers
 
         public async Task<IActionResult> GetTaskById(int id)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            if (task == null)
+            try
             {
-                return NotFound();
-            }
+                var task = await _context.Tasks.FindAsync(id);
+                if (task == null)
+                {
+                    return NotFound();
+                }
 
-            return Ok(task);
+                return Ok(task);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
