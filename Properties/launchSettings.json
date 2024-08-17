@@ -32,7 +32,7 @@
       },*/
 
       "ConnectionStrings": {
-        "DefaultConnection": "Server=server1dkr.database.windows.net;Database=webapp;User Id=dinukdb;Password=SGxd2544;"
+        "DefaultConnection": "Server=sqlserver.mysql.database.azure.com;Database=webapp;User Id=dkr;Password=SGxd2544;"
       },
 
       "Logging": {

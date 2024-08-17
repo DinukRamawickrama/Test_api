@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using WebAPP;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WebAPP.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +16,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication("JWTAuth") 
     .AddJwtBearer("JWTAuth" ,option => { }) ;
 
+builder.Services.AddScoped<WebAPP.Services.IUserService, UserService>();
 
 
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddDbContext<AppDbContext>(dbOptions => dbOptions.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 var app = builder.Build();

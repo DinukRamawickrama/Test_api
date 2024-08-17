@@ -10,5 +10,8 @@ namespace WebAPP
         }
 
         public DbSet<Model.Task> Tasks { get; set; } = default!;
+        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
+
     }
 }
