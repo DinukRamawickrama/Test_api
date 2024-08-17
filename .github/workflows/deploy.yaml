@@ -39,7 +39,7 @@ jobs:
  #    run: ssh ubuntu@${{ secrets.VPS_IP }}
 
     - name: Copy Docker image to VPS
-      run: sudo scp  -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa  webapp.tar.gz azureuser@${{ secrets.VPS_IP }}:/home/azureuser/remoteBuilds/
+      run: sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa  webapp.tar.gz azureuser@${{ secrets.VPS_IP }}:/home/azureuser/remoteBuilds
 
     - name: Login to VPS and run docker
       run: |
