@@ -24,7 +24,7 @@ jobs:
         docker build -t webapp .
         
     - name: Export image
-      run: docker save -o isec.tar.gz webapp
+      run: docker save -o webapp.tar.gz webapp
 
     - name: install ssh keys
 
@@ -48,7 +48,7 @@ jobs:
           sudo docker stop webappContainer || true &&
           sudo docker rm webappContainer || true &&
           sudo docker run \
-            -d --name webappContainer -p 80:5000 webapp &&
+            -d --name webappContainer -p 80:80 webapp &&
              exit"
 
     - name: cleanup
