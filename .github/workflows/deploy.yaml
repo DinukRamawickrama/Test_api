@@ -1,0 +1,55 @@
+name: Deploy to Ubuntu
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy-locally:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+      
+      with:
+        dockerfile: Dockerfile
+
+    - name: Build Docker image
+      run: |
+        docker build -t webapp .
+        
+    - name: Export image
+      run: docker save -o isec.tar.gz webapp
+
+    - name: install ssh keys
+
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
+
+ #   - name: Login to VPS
+ #    run: ssh ubuntu@${{ secrets.VPS_IP }}
+
+    - name: Copy Docker image to VPS
+      run: sudo scp  -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa  webapp.tar.gz azureuser@${{ secrets.VPS_IP }}:/home/azureuser/remoteBuilds/
+
+    - name: Login to VPS and run docker
+      run: |
+        ssh azureuser@${{ secrets.VPS_IP }} "
+          sudo docker load -i /home/azureuser/remoteBuilds/webapp.tar.gz &&
+          sudo docker stop webappContainer || true &&
+          sudo docker rm webappContainer || true &&
+          sudo docker run \
+            -d --name webappContainer -p 80:5000 webapp &&
+             exit"
+
+    - name: cleanup
+      run: rm -rf ~/.ssh
