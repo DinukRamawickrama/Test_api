@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using WebAPP;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebAPP.Services;
+using Microsoft.AspNetCore.Hosting.Server;
+using WebAPP.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,7 @@ builder.Services.AddScoped<WebAPP.Services.IUserService, UserService>();
 
 
 
-builder.Services.AddDbContext<AppDbContext>(dbOptions => dbOptions.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(dbOptions => dbOptions.UseMySQL("Server = sqlserver.mysql.database.azure.com; Database = webapp; User Id = dkr; Password = SGxd2544; "));
 
 
 var app = builder.Build();
