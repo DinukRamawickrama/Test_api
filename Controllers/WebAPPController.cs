@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using WebAPP.Model;
+using Task = WebAPP.Model.Task;
 
 
 namespace WebAPP.Controllers
@@ -23,19 +25,34 @@ namespace WebAPP.Controllers
 
         // Create Task
         [HttpPost]
-        public async Task<IActionResult> CreateTask(Model.Task task)
+
+        public async Task<IActionResult> CreateTask(TaskInput taskInput)
         {
             try
             {
-                task.CreatedOn = DateTime.UtcNow;
+                var task = new Task
+                {
+                    Name = taskInput.Name,
+                    Description = taskInput.Description,
+                    EstimatedDurationInHours = taskInput.EstimatedDurationInHours,
+                    StatusId = taskInput.StatusId,
+                    CreatedOn = DateTime.UtcNow,
+                    UpdatedOn = taskInput.UpdatedOn
+                };
+
                 _context.Tasks.Add(task);
                 await _context.SaveChangesAsync();
+
                 return CreatedAtAction(nameof(GetTaskById), new { id = task.ID }, task);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
+
 
         // Update Task
         [HttpPut("{id}")]
@@ -63,7 +80,8 @@ namespace WebAPP.Controllers
                 await _context.SaveChangesAsync();
 
                 return NoContent();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
 
@@ -88,7 +106,8 @@ namespace WebAPP.Controllers
                 await _context.SaveChangesAsync();
 
                 return NoContent();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
 
@@ -113,15 +132,16 @@ namespace WebAPP.Controllers
                 await _context.SaveChangesAsync();
 
                 return NoContent();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("authenticate")]
-        public IActionResult Authitcate() 
-            {
+        public IActionResult Authitcate()
+        {
             try
             {
                 var Claims = new[]
@@ -137,7 +157,8 @@ namespace WebAPP.Controllers
                 var tokenString = new JwtSecurityToken(Constants.Issuer, Constants.Audience, Claims, notBefore: DateTime.Now, expires: DateTime.Now.AddHours(1), signingCredentials);
 
                 return Ok(new { accessToken = tokenString });
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -159,7 +180,8 @@ namespace WebAPP.Controllers
                 }
 
                 return Ok(task);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
