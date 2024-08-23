@@ -85,22 +85,32 @@ namespace WebAPP.Services
 
         public async Task<RefreshToken?> GetRefreshTokenAsync(string token)
         {
+          
+            var tokens = _context.RefreshTokens
+               .Where(r => r.Token == token && r.Expires > DateTime.UtcNow && r.IsExpired == false)
+               .AsEnumerable()  
+               .Where(r => r.IsActive)
+               .ToList();
             return await _context.RefreshTokens.Include(rt => rt.User)
-                                                .SingleOrDefaultAsync(rt => rt.Token == token && rt.IsActive);
+           .SingleOrDefaultAsync(rt => rt.Token == token && rt.IsActive);
         }
 
   
 
         private string HashPassword(string password)
         {
-            using var hmac = new HMACSHA256();
-            return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
+            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes("y123"));
+            
+            var Hash= BitConverter.ToString(hmac.ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", "").ToLower();
+            Console.Write(Hash);
+            return Hash;
         }
 
         private bool VerifyPassword(string password, string storedHash)
         {
-            using var hmac = new HMACSHA256();
-            var computedHash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
+            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes("y123"));
+            var computedHash = BitConverter.ToString(hmac.ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", "").ToLower();
+            Console.Write(computedHash);
             return computedHash == storedHash;
         }
     }

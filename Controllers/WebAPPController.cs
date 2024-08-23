@@ -25,6 +25,7 @@ namespace WebAPP.Controllers
 
         // Create Task
         [HttpPost]
+        [Authorize]
 
         public async Task<IActionResult> CreateTask(TaskInput taskInput)
         {
@@ -56,6 +57,7 @@ namespace WebAPP.Controllers
 
         // Update Task
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateTask(int id, Model.Task task)
         {
             try
@@ -90,6 +92,7 @@ namespace WebAPP.Controllers
 
         // Complete Task
         [HttpPut("{id}/complete")]
+        [Authorize]
         public async Task<IActionResult> CompleteTask(int id)
         {
             try
@@ -116,6 +119,7 @@ namespace WebAPP.Controllers
 
         // Delete Task
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTask(int id)
         {
             try
@@ -140,6 +144,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet("authenticate")]
+        [Authorize]
         public IActionResult Authitcate()
         {
             try
