@@ -24,6 +24,16 @@ builder.Services.AddScoped<WebAPP.Services.IUserService, UserService>();
 
 builder.Services.AddDbContext<AppDbContext>(dbOptions => dbOptions.UseMySQL("Server = sqlserver.mysql.database.azure.com; Database = webapp; User Id = dkr; Password = SGxd2544; "));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAllOrigins",
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin(); // Allows requests from any origin
+                          builder.AllowAnyMethod(); // Allows all methods (GET, POST, PUT, DELETE, etc.)
+                          builder.AllowAnyHeader(); // Allows all headers
+                      });
+});
 
 var app = builder.Build();
 
@@ -34,6 +44,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthentication();
 app.UseAuthorization();
