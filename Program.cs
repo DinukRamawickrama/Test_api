@@ -22,7 +22,7 @@ builder.Services.AddScoped<WebAPP.Services.IUserService, UserService>();
 
 
 
-builder.Services.AddDbContext<AppDbContext>(dbOptions => dbOptions.UseMySQL("Server=52.23.160.92;Database=webapp;User Id=dkr;Password=SGxd2544;"));
+builder.Services.AddDbContext<AppDbContext>(dbOptions => dbOptions.UseMySQL("Server=db-webapp.chu2qwgk2qg8.us-east-1.rds.amazonaws.com;Database=db-webapp;User Id=dkr;Password=SGxd2544;"));
 
 builder.Services.AddCors(options =>
 {
